@@ -4,9 +4,13 @@ package com.codefish.service;/**
  * @apinote
  */
 
+import com.codefish.domain.User;
+import com.codefish.exception.LoginException;
+
 /**
  * @author: codefish
  * @discription:
  */
 public interface UserService {
+    User login(String userName, String passWord, String ip) throws LoginException;
 }

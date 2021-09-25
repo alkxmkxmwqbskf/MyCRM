@@ -7,10 +7,12 @@ package com.codefish.dao;
 
 import com.codefish.domain.User;
 
+import java.util.Map;
+
 /**
  * @author: codefish
  * @discription:
  */
 public interface UserDao {
-    User selectUser(User user);
+    User login(Map<String, String> map);
 }

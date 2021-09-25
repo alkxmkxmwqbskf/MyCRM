@@ -1,20 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 9/23/2021
-  Time: 8:28 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
+
+<!DOCTYPE html>
 <html>
-  <head>
-    <base href="<%=basePath%>">
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+	<base href="<%=basePath%>">
+<meta charset="UTF-8">
+</head>
+<body>
+	<script type="text/javascript">
+		document.location.href = "login.jsp";
+	</script>
+</body>
 </html>

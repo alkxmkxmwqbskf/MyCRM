@@ -18,7 +18,6 @@ public class TransactionInvocationHandler implements InvocationHandler{
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		
 		SqlSession session = null;
-		
 		Object obj = null;
 		
 		try{
@@ -32,7 +31,7 @@ public class TransactionInvocationHandler implements InvocationHandler{
 			e.printStackTrace();
 			
 			//处理的是什么异常，继续往上抛什么异常
-			//throw e.getCause();
+			throw e.getCause();
 		}finally{
 			SqlSessionUtil.myClose(session);
 		}
@@ -41,11 +40,8 @@ public class TransactionInvocationHandler implements InvocationHandler{
 	}
 	
 	public Object getProxy(){
-		
 		return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(),this);
-		
 	}
-	
 }
 
 
