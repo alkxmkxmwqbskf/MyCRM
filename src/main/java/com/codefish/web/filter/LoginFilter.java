@@ -25,17 +25,19 @@ public class LoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         //放行登录界面
-        //String path = request
-        //if ("/login.jsp".equals(path))
+        String path = request.getServletPath();
 
-
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
-        //如果user不为空, 说明登录过
-        if (user != null) {
+        if ("/login.jsp".equals(path) || "/index.jsp".equals(path) || "/user/login.do".equals(path)){
+            System.out.println("Path:"+path);
             chain.doFilter(req, resp);
         }else{
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+
+            //如果user不为空, 说明登录过
+            if (user != null) {
+                chain.doFilter(req, resp);
+            }else{
             /*
                 重定向路径如何写?
                 转发和重定向:
@@ -49,10 +51,11 @@ public class LoginFilter implements Filter {
                     请求转发之后, 路径会停留在老路径上, 而不是跳转之后资源新路径, 应该在跳转之后, 将地址栏改为最新资源的路径;
 
              */
-            //重定向到登录页
-            String path = request.getContextPath()+"/index.jsp";
-            System.out.println(path);
-            response.sendRedirect(request.getContextPath()+"/index.jsp");
+                //重定向到登录页
+                //String path = request.getContextPath()+"/index.jsp";
+                System.out.println(path);
+                response.sendRedirect(request.getContextPath()+"/index.jsp");
+            }
         }
     }
 }
