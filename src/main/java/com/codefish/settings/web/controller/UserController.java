@@ -1,12 +1,12 @@
-package com.codefish.web.controller;/**
+package com.codefish.settings.web.controller;/**
  * @author codefish
  * @date 9/23/2021
  * @apinote
  */
 
-import com.codefish.domain.User;
-import com.codefish.service.UserService;
-import com.codefish.service.impl.UserServiceImpl;
+import com.codefish.settings.domain.User;
+import com.codefish.settings.service.UserService;
+import com.codefish.settings.service.impl.UserServiceImpl;
 import com.codefish.util.MD5Util;
 import com.codefish.util.PrintJson;
 import com.codefish.util.ServiceFactory;
@@ -30,7 +30,7 @@ public class UserController extends HttpServlet {
         System.out.println("Welcome to The Control System!");
         System.out.println("错误");
         String path = request.getServletPath();
-        if ("/user/login.do".equals(path)){
+        if ("/settings/user/login.do".equals(path)){
             System.out.println(path);
             login(request, response);
             //request.getRequestDispatcher("/workbench/index.jsp").forward(request, response);

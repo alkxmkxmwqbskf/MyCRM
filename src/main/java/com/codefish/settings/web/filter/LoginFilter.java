@@ -1,10 +1,10 @@
-package com.codefish.web.filter;/**
+package com.codefish.settings.web.filter;/**
  * @author codefish
  * @date 9/25/2021
  * @apinote
  */
 
-import com.codefish.domain.User;
+import com.codefish.settings.domain.User;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ public class LoginFilter implements Filter {
         //放行登录界面
         String path = request.getServletPath();
 
-        if ("/login.jsp".equals(path) || "/index.jsp".equals(path) || "/user/login.do".equals(path)){
+        if ("/login.jsp".equals(path) || "/index.jsp".equals(path) || "/user/login.do".equals(path) || "/settings/user/login.do".equals(path)){
             System.out.println("Path:"+path);
             chain.doFilter(req, resp);
         }else{

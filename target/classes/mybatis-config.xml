@@ -19,6 +19,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/codefish/dao/UserDao.xml"/>
+        <mapper resource="com/codefish/settings/dao/UserDao.xml"/>
     </mappers>
 </configuration>

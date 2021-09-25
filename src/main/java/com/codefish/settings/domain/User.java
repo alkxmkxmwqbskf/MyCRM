@@ -1,4 +1,4 @@
-package com.codefish.domain;/**
+package com.codefish.settings.domain;/**
  * @author codefish
  * @date 9/23/2021
  * @apinote

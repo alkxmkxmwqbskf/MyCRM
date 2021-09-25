@@ -1,11 +1,11 @@
-package com.codefish.dao;
+package com.codefish.settings.dao;
 /**
  * @author codefish
  * @date 9/23/2021
  * @apinote
  */
 
-import com.codefish.domain.User;
+import com.codefish.settings.domain.User;
 
 import java.util.Map;
 
