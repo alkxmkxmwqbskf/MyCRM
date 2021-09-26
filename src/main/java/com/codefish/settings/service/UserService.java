@@ -7,10 +7,14 @@ package com.codefish.settings.service;/**
 import com.codefish.settings.domain.User;
 import com.codefish.exception.LoginException;
 
+import java.util.List;
+
 /**
  * @author: codefish
  * @discription:
  */
 public interface UserService {
     User login(String userName, String passWord, String ip) throws LoginException;
+
+    List<User> getUserList();
 }

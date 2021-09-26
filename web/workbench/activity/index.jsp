@@ -21,7 +21,28 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 	$(function(){
 		$("#createBtn").click(function(){
-			$("#createActivityModal").modal("show");
+
+			//在打开模态窗口前, 走后台获取用户信息;
+			$.ajax({
+				url: "workbench/activity/getUserList.do",
+				type: "get",
+				dataType: "json",
+				success: function(data){
+					/*
+                        data:
+                          [{"id": ?, "lockState": ?}, {""}]
+                     */
+					var html = "<option></option>";
+					$.each(data, function(i, n){
+						html += "<option value='"+n.id+"'>"+n.name+"</option>"
+					})
+
+					$("#create-marketActivityOwner").html(html);
+
+					//所有者下拉框处理完毕, 打开模态
+					$("#createActivityModal").modal("show");
+				}
+			})
 		})
 	});
 	
@@ -47,9 +68,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -232,14 +250,14 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 					<tbody>
 						<tr class="active">
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/detail.html';">发传单</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a></td>
                             <td>zhangsan</td>
 							<td>2020-10-10</td>
 							<td>2020-10-20</td>
 						</tr>
                         <tr class="active">
                             <td><input type="checkbox" /></td>
-                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/detail.html';">发传单</a></td>
+                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a></td>
                             <td>zhangsan</td>
                             <td>2020-10-10</td>
                             <td>2020-10-20</td>

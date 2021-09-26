@@ -26,11 +26,18 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.codefish.settings.web.controller.UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ActivityController</servlet-name>
+        <servlet-class>com.codefish.workbench.web.controller.ActivityController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/settings/user/login.do</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>ActivityController</servlet-name>
+        <url-pattern>/workbench/activity/getUserList.do</url-pattern>
+    </servlet-mapping>
 
 
 </web-app>
