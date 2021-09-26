@@ -1,0 +1,6 @@
+### 网页开发常用关键词约束
+    add/create : 跳转到添加页面, 或者打开添加操作模态窗口
+    save:执行添加操作
+    edit: 跳转到修改页, 或者打开修改操作的模态
+    update: 执行修改
+    get/find/select/query: 执行查询

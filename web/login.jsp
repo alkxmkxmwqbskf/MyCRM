@@ -14,6 +14,12 @@
 </head>
 <script>
 	$(function () {
+
+		//如果当前窗口不是顶级窗口, 就把当前窗口设置为顶级窗口
+		if (window.top != window){
+			window.top.location = window.location;
+		}
+
 		//页面加载完毕后, 清空文本内容;
 		$("#loginAct").val("");
 		//加载完页面自动获得焦点;
