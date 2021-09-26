@@ -5,9 +5,13 @@ package com.codefish.workbench.service.impl;/**
  */
 
 import com.codefish.util.SqlSessionUtil;
+import com.codefish.vo.PagenationVO;
 import com.codefish.workbench.dao.ActivityDao;
 import com.codefish.workbench.domain.Activity;
 import com.codefish.workbench.service.ActivityService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: codefish
@@ -25,5 +29,18 @@ public class ActivityServiceImpl implements ActivityService {
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    public PagenationVO<Activity> getPageList(Map<String, Object> map) {
+        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        //获取total
+        int total = activityDao.getTotalByCondition(map);
+        //取得dataList
+        List<Activity> activityList = activityDao.getActivityListByCondition(map);
+        PagenationVO<Activity> vo = new PagenationVO<>();
+        vo.setTotal(total);
+        vo.setDataList(activityList);
+        return vo;
     }
 }

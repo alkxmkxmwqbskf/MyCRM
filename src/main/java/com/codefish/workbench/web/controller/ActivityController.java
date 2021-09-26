@@ -11,6 +11,7 @@ import com.codefish.util.DateTimeUtil;
 import com.codefish.util.PrintJson;
 import com.codefish.util.ServiceFactory;
 import com.codefish.util.UUIDUtil;
+import com.codefish.vo.PagenationVO;
 import com.codefish.workbench.domain.Activity;
 import com.codefish.workbench.service.ActivityService;
 import com.codefish.workbench.service.impl.ActivityServiceImpl;
@@ -20,7 +21,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: codefish
@@ -35,7 +38,44 @@ public class ActivityController extends HttpServlet {
             getUserList(request, response);
         }else if ("/workbench/activity/save.do".equals(path)){
             save(request, response);
+        }else if ("/workbench/activity/getPageList.do".equals(path)){
+            //分页查询
+            getPageList(request, response);
         }
+    }
+
+    private void getPageList(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Welcome to page query controller!");
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        String name = request.getParameter("name");
+        String owner = request.getParameter("owner");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String pageNoStr = request.getParameter("pageNo");
+        int pageNo = Integer.parseInt(pageNoStr);
+        String pageSizeStr = request.getParameter("pageSize");
+        int pageSize = Integer.parseInt(pageSizeStr);
+        int skipCount = (pageNo - 1)*pageSize;
+
+        //查询数据封装到map
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        map.put("owner", owner);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
+        map.put("skipCount", skipCount);
+        map.put("pageSize", pageSize);
+
+        //查询数据
+        /*
+            map:
+            vo:
+                private int total;
+                private List<T> dataList;
+         */
+        PagenationVO<Activity> vo = activityService.getPageList(map);
+        PrintJson.printJsonObj(response, vo);
     }
 
     //市场活动表单数据保存
