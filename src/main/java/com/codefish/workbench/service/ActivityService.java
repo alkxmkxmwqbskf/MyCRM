@@ -4,9 +4,12 @@ package com.codefish.workbench.service;/**
  * @apinote
  */
 
+import com.codefish.workbench.domain.Activity;
+
 /**
  * @author: codefish
  * @discription:
  */
 public interface ActivityService {
+    boolean save(Activity activity);
 }

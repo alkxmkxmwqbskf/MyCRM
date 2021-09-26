@@ -7,8 +7,13 @@ package com.codefish.workbench.web.controller;/**
 import com.codefish.settings.domain.User;
 import com.codefish.settings.service.UserService;
 import com.codefish.settings.service.impl.UserServiceImpl;
+import com.codefish.util.DateTimeUtil;
 import com.codefish.util.PrintJson;
 import com.codefish.util.ServiceFactory;
+import com.codefish.util.UUIDUtil;
+import com.codefish.workbench.domain.Activity;
+import com.codefish.workbench.service.ActivityService;
+import com.codefish.workbench.service.impl.ActivityServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +33,40 @@ public class ActivityController extends HttpServlet {
         String path = request.getServletPath();
         if ("/workbench/activity/getUserList.do".equals(path)){
             getUserList(request, response);
+        }else if ("/workbench/activity/save.do".equals(path)){
+            save(request, response);
         }
+    }
+
+    //市场活动表单数据保存
+    private void save(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Market activity form saving!");
+        String id = UUIDUtil.getUUID();
+        String owner = request.getParameter("owner");
+        String name = request.getParameter("name");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String cost = request.getParameter("cost");
+        String description = request.getParameter("description");
+        //创建时间: 当前系统时间
+        String createTime = DateTimeUtil.getSysTime();
+        //创建人: 当前登录用户
+        String createBy = ((User) request.getSession().getAttribute("user")).getName();
+
+        Activity activity = new Activity();
+        activity.setId(id);
+        activity.setOwner(owner);
+        activity.setName(name);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        activity.setCost(cost);
+        activity.setDescription(description);
+        activity.setCreateTime(createTime);
+        activity.setCreateBy(createBy);
+
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        boolean success = activityService.save(activity);
+        PrintJson.printJsonFlag(response, success);
     }
 
     private void getUserList(HttpServletRequest request, HttpServletResponse response) {

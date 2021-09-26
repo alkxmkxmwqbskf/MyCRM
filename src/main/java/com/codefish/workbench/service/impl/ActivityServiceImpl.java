@@ -6,6 +6,7 @@ package com.codefish.workbench.service.impl;/**
 
 import com.codefish.util.SqlSessionUtil;
 import com.codefish.workbench.dao.ActivityDao;
+import com.codefish.workbench.domain.Activity;
 import com.codefish.workbench.service.ActivityService;
 
 /**
@@ -13,6 +14,16 @@ import com.codefish.workbench.service.ActivityService;
  * @discription:
  */
 public class ActivityServiceImpl implements ActivityService {
-    private ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
 
+    @Override
+    public boolean save(Activity activity) {
+        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        boolean flag = true;
+        int count = activityDao.save(activity);
+        if (count != 1){
+            //此处更好的方式应该是抛出一个自定义异常;
+            flag = false;
+        }
+        return flag;
+    }
 }

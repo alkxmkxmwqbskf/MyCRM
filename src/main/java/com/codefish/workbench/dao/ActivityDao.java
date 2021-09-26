@@ -4,9 +4,12 @@ package com.codefish.workbench.dao;/**
  * @apinote
  */
 
+import com.codefish.workbench.domain.Activity;
+
 /**
  * @author: codefish
  * @discription:
  */
 public interface ActivityDao {
+    int save(Activity activity);
 }
