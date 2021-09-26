@@ -19,12 +19,17 @@ import java.util.Map;
  * @discription:
  */
 public class UserServiceImpl implements UserService {
+    //private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+    /*
+    private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+    将userDao提到全局时报错
+        ### Error querying database.
+        ### Cause: org.apache.ibatis.executor.ExecutorException: Executor was closed.
+     */
 
     @Override
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
-
         UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
-
         Map<String, String> map = new HashMap<>();
         map.put("loginAct", loginAct);
         map.put("loginPwd", loginPwd);
@@ -60,6 +65,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUserList() {
-        return null;
+        //为什么只能这样调用
+        UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+        List<User> userList = userDao.getUserList();
+        return userList;
     }
 }

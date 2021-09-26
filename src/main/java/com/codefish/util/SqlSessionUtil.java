@@ -33,9 +33,10 @@ public class SqlSessionUtil {
 		SqlSession session = sessionThreadLocal.get();
 
 		if(session==null){
-
+			System.out.println("build session!");
 			session = sqlSessionFactory.openSession();
 			sessionThreadLocal.set(session);
+
 		}
 
 		return session;
