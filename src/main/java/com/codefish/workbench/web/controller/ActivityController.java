@@ -41,7 +41,69 @@ public class ActivityController extends HttpServlet {
         }else if ("/workbench/activity/getPageList.do".equals(path)){
             //分页查询
             getPageList(request, response);
+        }else if("/workbench/activity/delete.do".equals(path)){
+            //删除市场活动
+            delete(request, response);
+        }else if ("/workbench/activity/getUserListAndActivity.do".equals(path)){
+            //同步市场活动数据到修改模态窗口
+            getUserListAndActivity(request, response);
+        }else if("/workbench/activity/update.do".equals(path)){
+            //修改市场活动
+            update(request, response);
         }
+    }
+
+    private void update(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Execute the modify of activity info!");
+        String id = request.getParameter("id");
+        String owner = request.getParameter("owner");
+        String name = request.getParameter("name");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String cost = request.getParameter("cost");
+        String description = request.getParameter("description");
+        //修改时间: 当前系统时间
+        String editTime = DateTimeUtil.getSysTime();
+        //修改人: 当前登录用户
+        String editBy = ((User) request.getSession().getAttribute("user")).getName();
+
+        Activity activity = new Activity();
+        activity.setId(id);
+        activity.setOwner(owner);
+        activity.setName(name);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        activity.setCost(cost);
+        activity.setDescription(description);
+        activity.setEditTime(editTime);
+        activity.setEditBy(editBy);
+
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        boolean success = activityService.update(activity);
+        PrintJson.printJsonFlag(response, success);
+    }
+
+    private void getUserListAndActivity(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Entered the query list and according the activity's id query single record!");
+        String id = request.getParameter("id");
+        System.out.println("ID:"+id);
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        /*
+            uList activity
+            map
+         */
+
+        Map<String, Object> map = activityService.getUserListAndActivity(id);
+        PrintJson.printJsonObj(response, map);
+    }
+
+    private void delete(HttpServletRequest request, HttpServletResponse response) {
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        System.out.println("delete activity");
+        String[] ids = request.getParameterValues("id");
+        boolean success = activityService.delete(ids);
+        System.out.println("success:"+success);
+        PrintJson.printJsonFlag(response, success);
     }
 
     private void getPageList(HttpServletRequest request, HttpServletResponse response) {

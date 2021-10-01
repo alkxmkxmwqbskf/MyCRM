@@ -9,4 +9,7 @@ package com.codefish.workbench.dao;/**
  * @discription:
  */
 public interface ActivityRemarkDao {
+    Integer getCountByAids(String[] ids);
+
+    Integer deleteByAids(String[] ids);
 }

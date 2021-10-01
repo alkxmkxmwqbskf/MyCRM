@@ -4,12 +4,17 @@ package com.codefish.workbench.service.impl;/**
  * @apinote
  */
 
+import com.codefish.settings.dao.UserDao;
+import com.codefish.settings.domain.User;
 import com.codefish.util.SqlSessionUtil;
 import com.codefish.vo.PagenationVO;
 import com.codefish.workbench.dao.ActivityDao;
+import com.codefish.workbench.dao.ActivityRemarkDao;
 import com.codefish.workbench.domain.Activity;
 import com.codefish.workbench.service.ActivityService;
+import com.sun.corba.se.spi.ior.ObjectKey;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +47,54 @@ public class ActivityServiceImpl implements ActivityService {
         vo.setTotal(total);
         vo.setDataList(activityList);
         return vo;
+    }
+
+    @Override
+    public boolean delete(String[] ids) {
+        boolean flag = true;
+        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        //关联删除活动评论
+        Integer count = activityRemarkDao.getCountByAids(ids);
+        System.out.println(count);
+        //删除备注返回受影响的条数
+        //int count = 0;
+        int count_delete = activityRemarkDao.deleteByAids(ids);
+        if (count != count_delete){
+            flag = false;
+        }
+        int count_success = activityDao.delete(ids);
+        if (count_success != ids.length){
+            flag = false;
+        }
+        System.out.println(flag);
+        return flag;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndActivity(String id) {
+        //取uList and activity
+        UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        List<User> uList = userDao.getUserList();
+        //根据活动id获取单条数据
+        Activity activity = activityDao.getActivityById(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("uList", uList);
+        map.put("activity", activity);
+        return map;
+    }
+
+    @Override
+    public boolean update(Activity activity) {
+        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        boolean flag = true;
+        int count = activityDao.update(activity);
+        if (count != 1){
+            //此处更好的方式应该是抛出一个自定义异常;
+            flag = false;
+        }
+        return flag;
     }
 }
