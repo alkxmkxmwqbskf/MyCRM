@@ -11,6 +11,7 @@ import com.codefish.vo.PagenationVO;
 import com.codefish.workbench.dao.ActivityDao;
 import com.codefish.workbench.dao.ActivityRemarkDao;
 import com.codefish.workbench.domain.Activity;
+import com.codefish.workbench.domain.ActivityRemark;
 import com.codefish.workbench.service.ActivityService;
 import com.sun.corba.se.spi.ior.ObjectKey;
 
@@ -96,5 +97,19 @@ public class ActivityServiceImpl implements ActivityService {
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    public Activity getDetail(String id) {
+        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        Activity activity = activityDao.getDetail(id);
+        return activity;
+    }
+
+    @Override
+    public List<ActivityRemark> getRemarkListByAid(String activityId) {
+        ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        List<ActivityRemark> activityRemark = activityRemarkDao.getRemarkListByAid(activityId);
+        return activityRemark;
     }
 }

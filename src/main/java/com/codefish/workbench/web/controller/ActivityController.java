@@ -13,6 +13,7 @@ import com.codefish.util.ServiceFactory;
 import com.codefish.util.UUIDUtil;
 import com.codefish.vo.PagenationVO;
 import com.codefish.workbench.domain.Activity;
+import com.codefish.workbench.domain.ActivityRemark;
 import com.codefish.workbench.service.ActivityService;
 import com.codefish.workbench.service.impl.ActivityServiceImpl;
 
@@ -50,6 +51,37 @@ public class ActivityController extends HttpServlet {
         }else if("/workbench/activity/update.do".equals(path)){
             //修改市场活动
             update(request, response);
+        }else if("/workbench/activity/detail.do".equals(path)){
+            //跳转到详情页
+            getDetail(request, response);
+        }else if("/workbench/activity/getRemarkListByAid.do".equals(path)){
+            //获取备注
+            getRemarkListByAid(request, response);
+        }
+    }
+
+    private void getRemarkListByAid(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Get remark list!");
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        String activityId = request.getParameter("activityId");
+        List<ActivityRemark> remarkList = activityService.getRemarkListByAid(activityId);
+        System.out.println(remarkList);
+        PrintJson.printJsonObj(response, remarkList);
+    }
+
+    private void getDetail(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Enter the detail page");
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        try {
+            String id = request.getParameter("id");
+            Activity activity = activityService.getDetail(id);
+            System.out.println(activity);
+            request.setAttribute("activity", activity);
+            request.getRequestDispatcher("/workbench/activity/detail.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

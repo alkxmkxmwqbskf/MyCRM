@@ -6,7 +6,9 @@ package com.codefish.workbench.service;/**
 
 import com.codefish.vo.PagenationVO;
 import com.codefish.workbench.domain.Activity;
+import com.codefish.workbench.domain.ActivityRemark;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,4 +25,8 @@ public interface ActivityService {
     Map<String, Object> getUserListAndActivity(String id);
 
     boolean update(Activity activity);
+
+    Activity getDetail(String id);
+
+    List<ActivityRemark> getRemarkListByAid(String activityId);
 }
