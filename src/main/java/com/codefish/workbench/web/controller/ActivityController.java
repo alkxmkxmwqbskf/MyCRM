@@ -1,4 +1,5 @@
-package com.codefish.workbench.web.controller;/**
+package com.codefish.workbench.web.controller;
+/**
  * @author codefish
  * @date 9/25/2021
  * @apinote
@@ -31,6 +32,7 @@ import java.util.Map;
  * @discription:
  */
 public class ActivityController extends HttpServlet {
+    private ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("You have entered the market activities controller!");
@@ -57,7 +59,71 @@ public class ActivityController extends HttpServlet {
         }else if("/workbench/activity/getRemarkListByAid.do".equals(path)){
             //获取备注
             getRemarkListByAid(request, response);
+        }else if("/workbench/activity/deleteRemark.do".equals(path)){
+            //删除备注信息
+            deleteRemark(request, response);
+        }else if ("/workbench/activity/saveRemark.do".equals(path)){
+            //添加备注
+            saveRemark(request, response);
+        }else if ("/workbench/activity/updateRemark.do".equals(path)){
+            //修改备注
+            updateRemark(request, response);
         }
+    }
+
+    private void updateRemark(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String noteContent = request.getParameter("noteContent");
+        String editTime = DateTimeUtil.getSysTime();
+        String editBy = ((User) request.getSession().getAttribute("user")).getName();
+        String editFlag = "1";
+        ActivityRemark activityRemark = new ActivityRemark();
+        activityRemark.setId(id);
+        activityRemark.setNoteContent(noteContent);
+        activityRemark.setEditTime(editTime);
+        activityRemark.setEditBy(editBy);
+        activityRemark.setEditFlag(editFlag);
+
+        boolean success = activityService.updateRemark(activityRemark);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", success);
+        map.put("activityRemark", activityRemark);
+        PrintJson.printJsonObj(response, map);
+    }
+
+    private void saveRemark(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Add remark controller");
+
+
+        String noteContent = request.getParameter("noteContent");
+        String activityId = request.getParameter("activityId");
+        String id = UUIDUtil.getUUID();
+        String createTime = DateTimeUtil.getSysTime();
+        String createBy = ((User) request.getSession().getAttribute("user")).getName();
+        String editFlag = "0";
+
+        ActivityRemark activityRemark = new ActivityRemark();
+        activityRemark.setNoteContent(noteContent);
+        activityRemark.setActivityId(activityId);
+        activityRemark.setId(id);
+        activityRemark.setCreateTime(createTime);
+        activityRemark.setCreateBy(createBy);
+        activityRemark.setEditFlag(editFlag);
+
+        boolean success = activityService.saveRemark(activityRemark);
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", success);
+        map.put("activityRemark", activityRemark);
+        PrintJson.printJsonObj(response, map);
+    }
+
+    private void deleteRemark(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Entered the remark list controller");
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        String id = request.getParameter("id");
+        boolean success = activityService.deleteRemark(id);
+        PrintJson.printJsonFlag(response, success);
     }
 
     private void getRemarkListByAid(HttpServletRequest request, HttpServletResponse response) {

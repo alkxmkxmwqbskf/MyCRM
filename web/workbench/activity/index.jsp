@@ -16,7 +16,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
-//分页插件
+<%--分页插件--%>
 <link rel="stylesheet" type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css">
 <script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
 <script type="text/javascript" src="jquery/bs_pagination/en.js"></script>
@@ -323,7 +323,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </script>
 </head>
 <body>
-//隐藏域标签
+<%--隐藏域标签--%>
 <input type="hidden" id="hidden-name">
 <input type="hidden" id="hidden-owner">
 <input type="hidden" id="hidden-startDate">

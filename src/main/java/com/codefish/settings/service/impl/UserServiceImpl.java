@@ -1,4 +1,5 @@
-package com.codefish.settings.service.impl;/**
+package com.codefish.settings.service.impl;
+/**
  * @author codefish
  * @date 9/23/2021
  * @apinote
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
         ### Cause: org.apache.ibatis.executor.ExecutorException: Executor was closed.
      */
 
+    //private SqlSession session = SqlSessionUtil.getSqlSession();
+    private  UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
     @Override
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
         UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
@@ -34,8 +37,12 @@ public class UserServiceImpl implements UserService {
         map.put("loginAct", loginAct);
         map.put("loginPwd", loginPwd);
         map.put("ip", ip);
+        System.out.println("Log:"+userDao); //Log:org.apache.ibatis.binding.MapperProxy@4e1588f4
+        //Log:org.apache.ibatis.binding.MapperProxy@1b7f8028
 
         User user = userDao.login(map);
+
+        System.out.println("User:"+user);
         if (user == null){
             throw new LoginException("账号密码错误!");
         }
@@ -66,7 +73,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUserList() {
         //为什么只能这样调用
-        UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+        //UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+
         List<User> userList = userDao.getUserList();
         return userList;
     }

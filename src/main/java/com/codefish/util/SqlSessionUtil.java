@@ -36,11 +36,9 @@ public class SqlSessionUtil {
 			System.out.println("build session!");
 			session = sqlSessionFactory.openSession();
 			sessionThreadLocal.set(session);
-
 		}
-
+		System.out.println("Session-getSession:"+session);
 		return session;
-
 	}
 
 	public static void myClose(SqlSession session){

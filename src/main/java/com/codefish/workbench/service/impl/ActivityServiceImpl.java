@@ -1,4 +1,5 @@
-package com.codefish.workbench.service.impl;/**
+package com.codefish.workbench.service.impl;
+/**
  * @author codefish
  * @date 9/25/2021
  * @apinote
@@ -13,8 +14,6 @@ import com.codefish.workbench.dao.ActivityRemarkDao;
 import com.codefish.workbench.domain.Activity;
 import com.codefish.workbench.domain.ActivityRemark;
 import com.codefish.workbench.service.ActivityService;
-import com.sun.corba.se.spi.ior.ObjectKey;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +23,12 @@ import java.util.Map;
  * @discription:
  */
 public class ActivityServiceImpl implements ActivityService {
-
+    UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+    private ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+    ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
     @Override
     public boolean save(Activity activity) {
-        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+
         boolean flag = true;
         int count = activityDao.save(activity);
         if (count != 1){
@@ -39,7 +40,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public PagenationVO<Activity> getPageList(Map<String, Object> map) {
-        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        //ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
         //获取total
         int total = activityDao.getTotalByCondition(map);
         //取得dataList
@@ -53,8 +54,8 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public boolean delete(String[] ids) {
         boolean flag = true;
-        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
-        ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        //ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+
         //关联删除活动评论
         Integer count = activityRemarkDao.getCountByAids(ids);
         System.out.println(count);
@@ -75,8 +76,8 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Map<String, Object> getUserListAndActivity(String id) {
         //取uList and activity
-        UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
-        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        //UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+        //ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
         List<User> uList = userDao.getUserList();
         //根据活动id获取单条数据
         Activity activity = activityDao.getActivityById(id);
@@ -89,7 +90,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public boolean update(Activity activity) {
-        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        //ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
         boolean flag = true;
         int count = activityDao.update(activity);
         if (count != 1){
@@ -101,15 +102,53 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Activity getDetail(String id) {
-        ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
+        //ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
         Activity activity = activityDao.getDetail(id);
         return activity;
     }
 
     @Override
     public List<ActivityRemark> getRemarkListByAid(String activityId) {
-        ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        //ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
         List<ActivityRemark> activityRemark = activityRemarkDao.getRemarkListByAid(activityId);
         return activityRemark;
+    }
+
+    @Override
+    public boolean deleteRemark(String id) {
+        boolean flag = true;
+        //ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        int success = activityRemarkDao.deleteRemark(id);
+
+        if (success != 1){
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    @Override
+    public boolean saveRemark(ActivityRemark activityRemark) {
+        boolean flag = true;
+        ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        int count = activityRemarkDao.saveRemark(activityRemark);
+        if (count != 1){
+            flag = false;
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean updateRemark(ActivityRemark activityRemark) {
+        boolean flag = true;
+        /**
+         * 为什么这边如果不将全局变量activityRemarkDao提下来就会报错
+         */
+        ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
+        int account = activityRemarkDao.updateRemark(activityRemark);
+        if (account != 1){
+            flag = false;
+        }
+        return flag;
     }
 }

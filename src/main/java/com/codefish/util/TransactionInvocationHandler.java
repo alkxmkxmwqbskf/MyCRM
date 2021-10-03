@@ -22,7 +22,7 @@ public class TransactionInvocationHandler implements InvocationHandler{
 		
 		try{
 			session = SqlSessionUtil.getSqlSession();
-			
+			System.out.println("invoke"+session);
 			obj = method.invoke(target, args);
 			
 			session.commit();
@@ -33,6 +33,7 @@ public class TransactionInvocationHandler implements InvocationHandler{
 			//处理的是什么异常，继续往上抛什么异常
 			throw e.getCause();
 		}finally{
+			System.out.println("CloseSession:"+session);
 			SqlSessionUtil.myClose(session);
 		}
 		
