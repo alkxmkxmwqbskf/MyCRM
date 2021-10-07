@@ -22,5 +22,7 @@
         <mapper resource="com/codefish/settings/dao/UserDao.xml"/>
         <mapper resource="com/codefish/workbench/dao/ActivityDao.xml"/>
         <mapper resource="com/codefish/workbench/dao/ActivityRemarkDao.xml"/>
+        <mapper resource="com/codefish/settings/dao/DictTypeDao.xml"/>
+        <mapper resource="com/codefish/settings/dao/DictValueDao.xml"/>
     </mappers>
 </configuration>
